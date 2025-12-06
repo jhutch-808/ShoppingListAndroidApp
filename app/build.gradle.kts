@@ -84,4 +84,16 @@ dependencies {
 
     //fonts
     implementation("androidx.compose.ui:ui-text-google-fonts:1.6.8") 
+
+    //retorfit for network and maps to get data
+    // Retrofit for networking
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    // kotlinx.serialization converter for Retrofit
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+    // kotlinx.serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
+    //implementation(libs.places)
 }

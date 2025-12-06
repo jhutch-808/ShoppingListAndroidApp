@@ -10,13 +10,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.scene.rememberSceneSetupNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import androidx.savedstate.serialization.SavedStateConfiguration
 import dagger.hilt.android.AndroidEntryPoint
-import hu.bme.ait.wanderer.ui.navigation.AddPlaceScreenRoute
+import hu.bme.ait.wanderer.ui.navigation.AddRestarauntScreenRoute
 import hu.bme.ait.wanderer.ui.navigation.ListPlacesScreenRoute
 import hu.bme.ait.wanderer.ui.navigation.MainScreenRoute
 import hu.bme.ait.wanderer.ui.navigation.WelcomeScreenRoute
@@ -43,7 +46,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun NavGraph(modifier: Modifier = Modifier) {
-    val backStack = rememberNavBackStack(WelcomeScreenRoute)
+
+    val backStack= rememberNavBackStack(WelcomeScreenRoute)
 
     NavDisplay(
         modifier = modifier,
@@ -65,7 +69,7 @@ fun NavGraph(modifier: Modifier = Modifier) {
             entry<MainScreenRoute> {
                 MainScreen(
                     onAddRestarauntClicked = {
-                        backStack.add(AddPlaceScreenRoute)
+                        backStack.add(AddRestarauntScreenRoute)
                     },
                     onListRestarauntsClicked = {
                         backStack.add(ListPlacesScreenRoute)

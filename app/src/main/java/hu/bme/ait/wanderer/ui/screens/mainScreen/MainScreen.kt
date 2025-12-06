@@ -68,6 +68,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
+import hu.bme.ait.wanderer.network.PlaceResult
 import hu.bme.ait.wanderer.ui.theme.ForestGreen
 import hu.bme.ait.wanderer.ui.theme.Pink100
 import hu.bme.ait.wanderer.ui.theme.Pink80
@@ -85,7 +86,7 @@ fun MainScreen(
     //State for search bar
     var query by rememberSaveable { mutableStateOf("") }
     var active by remember { mutableStateOf(false) }
-    val searchHistory = remember { mutableStateOf(listOf("Budapest", "Vienna")) }
+    val searchResults by mainScreenViewModel.searchResults.collectAsState()
 
     Scaffold(
         topBar = {
@@ -119,10 +120,13 @@ fun MainScreen(
                     .align(Alignment.TopCenter)
                     .padding(horizontal = if (!active) 16.dp else 0.dp),
                 query = query,
-                onQueryChange = { query = it },
+                onQueryChange = {
+                    query = it
+                    mainScreenViewModel.searchPlaces(it)
+                                },
                 onSearch = {
                     // This is where you would trigger the search
-                    // e.g., mainScreenViewModel.searchPlaces(it)
+                    mainScreenViewModel.searchPlaces(it)
                     active = false
                 },
                 active = active,
@@ -130,18 +134,47 @@ fun MainScreen(
                 placeholder = { Text("Search for a place") },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search") },
             ) {
-                // This block is the content shown when the search bar is active (expanded).
-                // You would show search suggestions or history here.
-                searchHistory.value.forEach {
-                    ListItem(
-                        headlineContent = { Text(it) },
-                        modifier = Modifier.clickable {
-                            query = it
-                            // mainScreenViewModel.searchPlaces(it)
-                            active = false
-                        }
-                    )
+                LazyColumn {
+                    items(searchResults) { placeResult ->
+                        ListItem(
+                            headlineContent = { Text(placeResult.name ?: "No name") },
+                            supportingContent = { Text(placeResult.formattedAddress ?: "") },
+                            leadingContent = {
+                                // Display price level if available
+                                placeResult.priceLevel?.let {
+                                    Text(
+                                        text = "$".repeat(it),
+                                        color = Color.Gray,
+                                        fontSize = 18.sp
+                                    )
+                                }
+                            },
+                            trailingContent = {
+                                // Display rating if available
+                                placeResult.rating?.let {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Icon(
+                                            painter = painterResource(id = android.R.drawable.star_on),
+                                            contentDescription = "Rating",
+                                            tint = Color(0xFFFFC107) // Amber color for star
+                                        )
+                                        Spacer(modifier = Modifier.width(4.dp))
+                                        Text(it.toString())
+                                    }
+                                }
+                            },
+                            modifier = Modifier.clickable {
+                                // When a user clicks a result:
+                                // 1. Update the search bar text
+                                query = placeResult.name ?: ""
+                                // 2. Close the active search view
+                                active = false
+                                // 3. (Future step) You could navigate to a detail screen
+                            }
+                        )
+                    }
                 }
+
             }
 
             // Your main content goes here.
