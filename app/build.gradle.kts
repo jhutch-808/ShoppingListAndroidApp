@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = "hu.bme.ait.shoppingList"
+    namespace = "hu.bme.ait.wanderer"
     compileSdk = 36
 
     defaultConfig {
@@ -61,6 +61,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
+    //navigation
     implementation(libs.androidx.navigation3.ui)
     implementation(libs.androidx.navigation3.runtime)
     implementation(libs.androidx.lifecycle.viewmodel.navigation3)

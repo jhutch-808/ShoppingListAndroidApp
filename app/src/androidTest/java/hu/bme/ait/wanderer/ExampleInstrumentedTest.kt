@@ -1,4 +1,4 @@
-package hu.bme.ait.shoppingList
+package hu.bme.ait.wanderer
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

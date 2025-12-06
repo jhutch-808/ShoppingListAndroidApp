@@ -1,4 +1,4 @@
-package hu.bme.ait.shoppingList.ui.theme
+package hu.bme.ait.wanderer.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
@@ -10,3 +10,8 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 val Pink100 = Color(0xFFEFCFD8)
+
+
+val MintGreen = Color(0xFFB8ECC8)
+val DarkGreen = Color(0xFF5B885B)
+val ForestGreen = Color(0xFF143A17)

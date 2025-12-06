@@ -1,4 +1,4 @@
-package hu.bme.ait.shoppingList.ui
+package hu.bme.ait.wanderer.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -16,11 +16,13 @@ import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.scene.rememberSceneSetupNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import dagger.hilt.android.AndroidEntryPoint
-import hu.bme.ait.shoppingList.ui.navigation.ShoppingItemsScreenRoute
-import hu.bme.ait.shoppingList.ui.navigation.WelcomeScreenRoute
-import hu.bme.ait.shoppingList.ui.screens.ShoppingItemScreen
-import hu.bme.ait.shoppingList.ui.screens.WelcomeScreen
-import hu.bme.ait.shoppingList.ui.theme.ShoppingItemAppTheme
+import hu.bme.ait.wanderer.ui.navigation.AddPlaceScreenRoute
+import hu.bme.ait.wanderer.ui.navigation.ListPlacesScreenRoute
+import hu.bme.ait.wanderer.ui.navigation.MainScreenRoute
+import hu.bme.ait.wanderer.ui.navigation.WelcomeScreenRoute
+import hu.bme.ait.wanderer.ui.screens.mainScreen.MainScreen
+import hu.bme.ait.wanderer.ui.screens.welcomescreens.WelcomeScreen
+import hu.bme.ait.wanderer.ui.theme.WandererTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -28,7 +30,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            ShoppingItemAppTheme {
+            WandererTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     NavGraph(
                         modifier = Modifier.padding(innerPadding)
@@ -56,12 +58,19 @@ fun NavGraph(modifier: Modifier = Modifier) {
             entry<WelcomeScreenRoute> {
                 WelcomeScreen(
                     onContinueClicked = {
-                        backStack.add(ShoppingItemsScreenRoute)
+                        backStack.add(MainScreenRoute)
                     }
                 )
             }
-            entry<ShoppingItemsScreenRoute> {
-                ShoppingItemScreen()
+            entry<MainScreenRoute> {
+                MainScreen(
+                    onAddRestarauntClicked = {
+                        backStack.add(AddPlaceScreenRoute)
+                    },
+                    onListRestarauntsClicked = {
+                        backStack.add(ListPlacesScreenRoute)
+                    }
+                )
             }
 
         }

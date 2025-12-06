@@ -1,4 +1,4 @@
-package hu.bme.ait.shoppingList
+package hu.bme.ait.wanderer
 
 import org.junit.Test
 

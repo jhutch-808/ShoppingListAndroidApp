@@ -1,4 +1,4 @@
-package hu.bme.ait.shoppingList.ui.theme
+package hu.bme.ait.wanderer.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -33,7 +33,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun ShoppingItemAppTheme(
+fun WandererTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
