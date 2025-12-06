@@ -9,3 +9,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
+class MainScreenViewModel @Inject constructor(val LocationDAO: LocationDAO): ViewModel() {
+
+
+
+
+}
