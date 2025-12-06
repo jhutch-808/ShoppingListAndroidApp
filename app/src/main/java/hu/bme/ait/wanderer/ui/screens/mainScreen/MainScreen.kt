@@ -39,6 +39,7 @@ import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.DockedSearchBar
 import androidx.compose.material3.DropdownMenu
@@ -62,10 +63,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.R
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
+import hu.bme.ait.wanderer.ui.theme.ForestGreen
 import hu.bme.ait.wanderer.ui.theme.Pink100
 import hu.bme.ait.wanderer.ui.theme.Pink80
 import hu.bme.ait.wanderer.ui.theme.Purple40
@@ -79,39 +82,22 @@ fun MainScreen(
     onListRestarauntsClicked: () -> Unit,
     mainScreenViewModel: MainScreenViewModel = hiltViewModel()
 ) {
-
-//    // --- ViewModel States ---
-//    val searchQuery by mainScreenViewModel.searchQuery.collectAsState()
-//    val searchResults by mainScreenViewModel.searchResults.collectAsState()
-//    val selectedPlace by mainScreenViewModel.selectedPlace.collectAsState()
-
-//    // --- Hardcoded data (replace with DAO data) ---
-//    val savedLocations = listOf(
-//        LatLng(47.497913, 19.040236),
-//        LatLng(40.7128, -74.0060)
-//    )
-//    val cameraPositionState = rememberCameraPositionState {
-//        position = CameraPosition.fromLatLngZoom(savedLocations.first(), 10f)
-//    }
-//
-//    // --- Side Effects ---
-//    // This will run when a place is selected from the search results
-//    LaunchedEffect(selectedPlace) {
-//        selectedPlace?.location?.let { latLng ->
-//            cameraPositionState.animate(
-//                update = CameraUpdateFactory.newLatLngZoom(latLng, 15f)
-//            )
-//        }
-//    }
+    //State for search bar
+    var query by rememberSaveable { mutableStateOf("") }
+    var active by remember { mutableStateOf(false) }
+    val searchHistory = remember { mutableStateOf(listOf("Budapest", "Vienna")) }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("WhereToGo") },
+                title = { Text("Wanderer") },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    containerColor = ForestGreen,
                     titleContentColor = Color.White
-                )
+                ),
+                actions = {
+
+                }
             )
         },
         bottomBar = {
@@ -126,6 +112,49 @@ fun MainScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
+
+            //Search bar
+            DockedSearchBar(
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(horizontal = if (!active) 16.dp else 0.dp),
+                query = query,
+                onQueryChange = { query = it },
+                onSearch = {
+                    // This is where you would trigger the search
+                    // e.g., mainScreenViewModel.searchPlaces(it)
+                    active = false
+                },
+                active = active,
+                onActiveChange = { active = it },
+                placeholder = { Text("Search for a place") },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search") },
+            ) {
+                // This block is the content shown when the search bar is active (expanded).
+                // You would show search suggestions or history here.
+                searchHistory.value.forEach {
+                    ListItem(
+                        headlineContent = { Text(it) },
+                        modifier = Modifier.clickable {
+                            query = it
+                            // mainScreenViewModel.searchPlaces(it)
+                            active = false
+                        }
+                    )
+                }
+            }
+
+            // Your main content goes here.
+            // When the search bar is not active, this content is visible.
+            if (!active) {
+                Column(
+                    modifier = Modifier.fillMaxSize().padding(top = 80.dp), // Add padding to not overlap with search bar
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text("Your saved places or comparison view will be here.")
+                }
+            }
+            //
 
         }
     }
