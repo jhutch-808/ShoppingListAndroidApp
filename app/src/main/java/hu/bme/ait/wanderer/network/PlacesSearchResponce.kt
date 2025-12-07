@@ -19,7 +19,7 @@ data class PlaceResult(
     @SerialName("formatted_address")
     val formattedAddress: String? = null,
 
-    @SerialName("id")
+    @SerialName("place_id")
     val placeId: String? = null,
 
     // The geometry of the place, which includes the location (latitude and longitude).
@@ -56,4 +56,39 @@ data class Location(
     val latitude: Double,
     @SerialName("lng")
     val longitude: Double
+)
+
+@Serializable
+data class InfoscreenResult(
+    @SerialName("displayName")
+    val displayName: DisplayName?,
+    @SerialName("priceLevel")
+    val priceLevel: String?,
+    @SerialName("rating")
+    val rating: Double?,
+    @SerialName("userRatingCount")
+    val userRatingsTotal: Int?,
+    @SerialName("formattedAddress")
+    val formattedAddress: String?,
+    @SerialName("primaryType")
+    val primaryType: String,
+    @SerialName("currentOpeningHours ")
+    val currOpeningHours: CurrentOpeningHours
+   )
+@Serializable
+data class CurrentOpeningHours(
+    @SerialName("openNow")
+    val openNow: Boolean? = null,
+    @SerialName("weekdayDescriptions")
+    val weekdayDescriptions: List<String>? = null
+)
+
+
+
+@Serializable
+data class DisplayName(
+    @SerialName("text")
+    val text: String? = null,
+    @SerialName("languageCode")
+    val languageCode: String? = null
 )

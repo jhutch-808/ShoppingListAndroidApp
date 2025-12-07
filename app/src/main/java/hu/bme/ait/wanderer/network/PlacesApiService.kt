@@ -2,19 +2,20 @@ package hu.bme.ait.wanderer.network
 
 import retrofit2.http.Query
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 interface PlacesApiService {
     @GET("api/place/textsearch/json")
     suspend fun searchPlaces(
         @Query("query") query: String,
         @Query("key") apiKey: String
-    ): PlacesSearchResponse // You'll need to define this data class
+    ): PlacesSearchResponse // define data class in
 
-    @GET("api/place/details/json")
+    @GET("https://places.googleapis.com/v1/places/{placeId}?")
     suspend fun getLocationInfo(
-        @Query("place_id") placeId: String,
+        @Path("placeId") placeId: String,
         @Query("key") apiKey: String,
-        @Query("fields") fields: String = "name,formatted_address,rating,user_ratings_total,price_level,types,geometry"
-    ): PlaceResult // You'll need to define this data class
+        @Query("fields") fields: String = "displayName,priceLevel,rating,formattedAddress,userRatingCount,primaryType,currentOpeningHours"
+    ): InfoscreenResult // You'll need to define this data class
 }
 

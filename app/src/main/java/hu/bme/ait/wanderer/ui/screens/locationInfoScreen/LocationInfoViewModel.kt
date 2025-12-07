@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.bme.ait.wanderer.data.LocationInfoItem
+import hu.bme.ait.wanderer.network.InfoscreenResult
 import hu.bme.ait.wanderer.network.PlaceResult
 import hu.bme.ait.wanderer.network.PlacesApiService
 import hu.bme.ait.wanderer.network.PlacesSearchResponse
@@ -16,7 +17,7 @@ import javax.inject.Inject
 
 sealed interface LocationUIState {
     object Init : LocationUIState
-    data class Success(val location: PlaceResult) : LocationUIState
+    data class Success(val location: InfoscreenResult) : LocationUIState
     object Loading : LocationUIState
     object Error : LocationUIState
 }
@@ -41,6 +42,7 @@ class LocationInfoViewModel @Inject constructor(val placesApiService: PlacesApiS
             } catch (e: Exception){
                 locationUIState = LocationUIState.Error
                 Log.d("LocationInfoViewModel", "API call failed: ${e.message}")
+                Log.d("LocationInfoViewModel", "API call failed: ${e.cause}")
 
             }
 

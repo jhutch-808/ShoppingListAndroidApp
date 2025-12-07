@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Restaurant
+import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -39,8 +40,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import hu.bme.ait.wanderer.R
+import hu.bme.ait.wanderer.network.InfoscreenResult
 import hu.bme.ait.wanderer.network.PlaceResult
 import hu.bme.ait.wanderer.ui.theme.ForestGreen
+import hu.bme.ait.wanderer.ui.theme.MintGreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -115,12 +118,14 @@ fun LocationInfoScreen(
 }
 
 @Composable
-fun InfoResultWidget(placeResult: PlaceResult) {
+fun InfoResultWidget(placeResult: InfoscreenResult) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.background(color = ForestGreen).padding(10.dp)
+        modifier = Modifier
+            .background(color = MintGreen)
+            .padding(10.dp)
     ) {
-        placeResult.name?.let {
+        placeResult.displayName?.text?.let {
             Text(
                 text = "Name: $it",
                 style = MaterialTheme.typography.headlineSmall
@@ -143,10 +148,10 @@ fun InfoResultWidget(placeResult: PlaceResult) {
             label = "Price Level",
             text = placeResult.priceLevel?.let { level ->
                 when (level) {
-                    1 -> "$ Inexpensive"
-                    2 -> "$$ Moderate"
-                    3 -> "$$$ Expensive"
-                    4 -> "$$$$ Very Expensive"
+                    "PRICE_LEVEL_INEXPENSIVE" -> "$ Inexpensive"
+                    "PRICE_LEVEL_MODERATE"-> "$$ Moderate"
+                    "PRICE_LEVEL_EXPENSIVE"-> "$$$ Expensive"
+                    "PRICE_LEVEL_VERY_EXPENSIVE"-> "$$$$ Very Expensive"
                     else -> "Not Available"
                 }
             } ?: "Not Available"
@@ -154,7 +159,12 @@ fun InfoResultWidget(placeResult: PlaceResult) {
         InfoRow(
             icon = Icons.Default.Restaurant,
             label = "Type",
-            text = placeResult.types?.joinToString(", ") ?: "Not Available"
+            text = placeResult.primaryType?: "Not Available"
+        )
+        InfoRow(
+            icon = Icons.Default.Schedule,
+            label = "Opening Hours",
+            text = placeResult.currOpeningHours.weekdayDescriptions?.joinToString(", ") ?: "Not Available"
         )
     }
 
