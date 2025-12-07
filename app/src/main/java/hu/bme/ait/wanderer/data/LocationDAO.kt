@@ -14,5 +14,28 @@ interface LocationDAO{
     @Query("SELECT * FROM locationsTable")
     fun getAllLocations(): Flow<List<LocationInfoItem>>
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(locationInfoItem: LocationInfoItem): Long
+
+    @Update
+    suspend fun update(locationInfoItem: LocationInfoItem)
+
+    @Delete
+    suspend fun delete(locationInfoItem: LocationInfoItem)
+
+    @Query("DELETE FROM locationsTable")
+    suspend fun deleteAll()
+
+    @Query("SELECT * FROM locationsTable WHERE locationId = :locationId")
+    fun getLocationById(locationId: Int): Flow<LocationInfoItem>
+
+    @Query("SELECT * FROM locationsTable WHERE name = :name")
+    fun getLocationByName(name: String): Flow<LocationInfoItem>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertLabelCrossRefs(crossRefs: List<LocationLabelCrossRef>)
+
+
+
 
 }

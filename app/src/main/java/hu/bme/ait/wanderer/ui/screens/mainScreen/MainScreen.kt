@@ -70,6 +70,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import hu.bme.ait.wanderer.network.PlaceResult
+import hu.bme.ait.wanderer.ui.screens.commons.CommonBottomAppBar
 import hu.bme.ait.wanderer.ui.theme.ForestGreen
 import hu.bme.ait.wanderer.ui.theme.Pink100
 import hu.bme.ait.wanderer.ui.theme.Pink80
@@ -80,7 +81,7 @@ import java.util.Date
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
-    onAddRestarauntClicked: () -> Unit,
+    onAddRestarauntClicked: (name: String, pricelevel: String, address: String) -> Unit,
     onListRestarauntsClicked: () -> Unit,
     onLocationInfoClicked:(String) -> Unit,
     mainScreenViewModel: MainScreenViewModel = hiltViewModel()
@@ -104,8 +105,8 @@ fun MainScreen(
             )
         },
         bottomBar = {
-            MainBottomAppBar(
-                onAddRestarauntClicked = onAddRestarauntClicked,
+            CommonBottomAppBar(
+                onAddRestarauntClicked = { onAddRestarauntClicked("","","") },
                 onListRestarauntsClicked = onListRestarauntsClicked,
             )
         }
@@ -197,24 +198,24 @@ fun MainScreen(
     }
 }
 
-@Composable
-fun MainBottomAppBar(
-    onAddRestarauntClicked: () -> Unit,
-    onListRestarauntsClicked: () -> Unit,
-) {
-    BottomAppBar(
-        actions = {
-            IconButton(onClick = onListRestarauntsClicked) {
-                Icon(
-                    Icons.AutoMirrored.Filled.List, // Corrected icon
-                    contentDescription = "List Saved Places"
-                )
-            }
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = onAddRestarauntClicked) {
-                Icon(Icons.Default.Add, contentDescription = "Add Place")
-            }
-        }
-    )
-}
+//@Composable
+//fun MainBottomAppBar(
+//    onAddRestarauntClicked: () -> Unit,
+//    onListRestarauntsClicked: () -> Unit,
+//) {
+//    BottomAppBar(
+//        actions = {
+//            IconButton(onClick = onListRestarauntsClicked) {
+//                Icon(
+//                    Icons.AutoMirrored.Filled.List, // Corrected icon
+//                    contentDescription = "List Saved Places"
+//                )
+//            }
+//        },
+//        floatingActionButton = {
+//            FloatingActionButton(onClick = onAddRestarauntClicked) {
+//                Icon(Icons.Default.Add, contentDescription = "Add Place")
+//            }
+//        }
+//    )
+//}

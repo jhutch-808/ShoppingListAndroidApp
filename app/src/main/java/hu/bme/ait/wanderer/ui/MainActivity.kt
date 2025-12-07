@@ -27,6 +27,7 @@ import hu.bme.ait.wanderer.ui.navigation.ListPlacesScreenRoute
 import hu.bme.ait.wanderer.ui.navigation.LocationInfoScreenRoute
 import hu.bme.ait.wanderer.ui.navigation.MainScreenRoute
 import hu.bme.ait.wanderer.ui.navigation.WelcomeScreenRoute
+import hu.bme.ait.wanderer.ui.screens.addRestarauntScreen.AddLocationScreen
 import hu.bme.ait.wanderer.ui.screens.locationInfoScreen.LocationInfoScreen
 import hu.bme.ait.wanderer.ui.screens.mainScreen.MainScreen
 import hu.bme.ait.wanderer.ui.screens.welcomescreens.WelcomeScreen
@@ -73,8 +74,8 @@ fun NavGraph(modifier: Modifier = Modifier) {
             }
             entry<MainScreenRoute> {
                 MainScreen(
-                    onAddRestarauntClicked = {
-                        backStack.add(AddRestarauntScreenRoute)
+                    onAddRestarauntClicked = { name, pricelevel, address ->
+                        backStack.add(AddRestarauntScreenRoute(name = "", priceLevel = "", address = ""))
                     },
                     onListRestarauntsClicked = {
                         backStack.add(ListPlacesScreenRoute)
@@ -92,16 +93,33 @@ fun NavGraph(modifier: Modifier = Modifier) {
                     onBackToMainClicked = {
                         backStack.removeLastOrNull()
                     },
-                    onNavigateToAddLocationClicked = {
-                        backStack.add(AddRestarauntScreenRoute)
+                    onAddRestarauntClicked = { name, pricelevel, address ->
+                        backStack.add(AddRestarauntScreenRoute(name = name, priceLevel = pricelevel, address = address))
+                    },
+                    onListRestarauntsClicked = {
+                        backStack.add(ListPlacesScreenRoute)
                     }
                 )
             }
 
-            entry<AddRestarauntScreenRoute> {
+            entry<AddRestarauntScreenRoute> {navKey ->
+                AddLocationScreen(
+                    name = navKey.name,
+                    priceLevel = navKey.priceLevel,
+                    address = navKey.address,
+                    onListRestaurantsClicked = {
+                        backStack.add(ListPlacesScreenRoute)
+                    },
+                    onBackClicked = {
+                        backStack.removeLastOrNull()
+                    }
+
+                )
+
             }
 
 
         }
     )
 }
+

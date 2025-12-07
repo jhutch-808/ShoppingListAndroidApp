@@ -8,16 +8,14 @@ import java.util.Date
 
 @Entity(tableName = "locationsTable")
 data class LocationInfoItem(
-    @PrimaryKey(autoGenerate = true) val locationId: Int = 0,
+    @PrimaryKey(autoGenerate = true) val locationId: Long = 0,
     @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "locationType") val locationType: LocationTypeCategory,
-    @ColumnInfo(name = "description") val description: String,
     @ColumnInfo(name = "visitDate") val visitDate: Date,
-    @ColumnInfo(name = "latitude") val latitude: Double,
-    @ColumnInfo(name = "longitude") val longitude: Double,
-    @ColumnInfo(name = "cusine") val cusine: String,
+    @ColumnInfo(name = "locationType") val locationType: String,
     @ColumnInfo(name = "priceRange") val priceRange: PriceRangeCategory,
-    @ColumnInfo(name = "ranking") val ranking: Int
+    @ColumnInfo(name = "ranking") val ranking: Int,
+    @ColumnInfo(name = "notes") val notes: String,
+    @ColumnInfo(name = "address") val address: String
 )
 
 enum class LocationTypeCategory(val displayName: String){
@@ -31,11 +29,13 @@ enum class LocationTypeCategory(val displayName: String){
 
 }
 
+
 enum class PriceRangeCategory(val displayName: String){
     CHEAP("$"),
     MEDIUM("$$"),
     EXPENSIVE("$$$"),
-    SUPEREXPENSIVE("$$$$")
+    SUPEREXPENSIVE("$$$$"),
+    UNKNOWN("Unknown")
 }
 
 

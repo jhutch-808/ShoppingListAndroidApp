@@ -16,12 +16,12 @@ import hu.bme.ait.wanderer.data.LocationDAO
 class DatabaseModule {
 
     @Provides
-    fun provideShoppingItemDao(appDatabase: AppDataBase) : LocationDAO {
+    fun provideLocationItemDao(appDatabase: AppDataBase) : LocationDAO {
         return appDatabase.locationDAO()
     }
 
     @Provides
-    fun provideShoppingItemsDataBase(
+    fun provideLocationItemsDataBase(
         @ApplicationContext appContext: Context
     ) : AppDataBase {
         return AppDataBase.getDatabase(appContext)

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.AttachMoney
@@ -43,7 +44,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import hu.bme.ait.wanderer.R
 import hu.bme.ait.wanderer.network.InfoscreenResult
 import hu.bme.ait.wanderer.network.PlaceResult
-import hu.bme.ait.wanderer.ui.screens.mainScreen.MainBottomAppBar
+import hu.bme.ait.wanderer.ui.screens.commons.CommonBottomAppBar
 import hu.bme.ait.wanderer.ui.theme.DarkGreen
 import hu.bme.ait.wanderer.ui.theme.ForestGreen
 import hu.bme.ait.wanderer.ui.theme.MintGreen
@@ -53,14 +54,16 @@ import hu.bme.ait.wanderer.ui.theme.MintGreen
 fun LocationInfoScreen(
     placeId: String,
     onBackToMainClicked: () -> Unit,
-
-    onNavigateToAddLocationClicked: () -> Unit,
+    onAddRestarauntClicked: (name: String, pricelevel: String, address: String)-> Unit,
+    onListRestarauntsClicked: ()-> Unit,
     viewModel: LocationInfoViewModel = hiltViewModel()
 ) {
     LaunchedEffect(key1 = placeId) {
         viewModel.getLocationInfo(placeId)
 
     }
+    val uiState = viewModel.locationUIState
+
     Log.d("NAV_DEBUG", "LocationInfoScreen composed successfully with place: ${placeId}")
     Scaffold(
         topBar = {
@@ -77,39 +80,55 @@ fun LocationInfoScreen(
                 )
             )
 
+        },
+        bottomBar = {
+            CommonBottomAppBar(
+                onAddRestarauntClicked = {
+                    if(uiState is LocationUIState.Success){
+                        Log.d("NAV_DEBUG_LOCATIONINFO", "Navigating to AddRestarauntScreen with place: ${(uiState as LocationUIState.Success).location.displayName?.text}")
+                        val placeResult = (uiState as LocationUIState.Success).location
+                        val name = placeResult.displayName?.text ?: "Unknown"
+                        val priceLevel = placeResult.priceLevel ?: "Unknown"
+                        onAddRestarauntClicked(name,priceLevel,placeResult.formattedAddress ?: "Unknown")
+                    }
+                },
+                onListRestarauntsClicked = onListRestarauntsClicked,
+            )
         }
     ) { innerPadding ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    when (viewModel.locationUIState) {
-                        LocationUIState.Error -> {
-                            Text("Error fetching location info")
-                        }
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        when (viewModel.locationUIState) {
+                            LocationUIState.Error -> {
+                                Text("Error fetching location info")
+                            }
 
-                        LocationUIState.Init -> {
-                            Text("Initializing...")
-                        }
+                            LocationUIState.Init -> {
+                                Text("Initializing...")
+                            }
 
-                        LocationUIState.Loading -> {
-                            CircularProgressIndicator()
-                        }
+                            LocationUIState.Loading -> {
+                                CircularProgressIndicator()
+                            }
 
-                        is LocationUIState.Success -> InfoResultWidget(
-                            (viewModel.locationUIState as LocationUIState.Success).location
-                        )
+                            is LocationUIState.Success -> InfoResultWidget(
+                                (viewModel.locationUIState as LocationUIState.Success).location
+                            )
+                        }
                     }
-                }
 
+                }
             }
 
         }

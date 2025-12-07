@@ -11,7 +11,9 @@ data object MainScreenRoute: NavKey
 data object WelcomeScreenRoute : NavKey
 
 @Serializable
-data object AddRestarauntScreenRoute: NavKey
+data class AddRestarauntScreenRoute(val name: String,
+                                     val priceLevel: String,
+                                     val address: String): NavKey
 
 @Serializable
 data object ListPlacesScreenRoute: NavKey
