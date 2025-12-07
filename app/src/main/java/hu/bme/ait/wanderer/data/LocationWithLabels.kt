@@ -9,7 +9,7 @@ data class LocationWithLabels(
     @Embedded // emebeds the main Locationifo object
     val location: LocationInfoItem,
 
-    @Relation( // How room should fetch the labels
+    @Relation(
         parentColumn = "locationId",
         entityColumn = "locationId", // references the location ID
     )

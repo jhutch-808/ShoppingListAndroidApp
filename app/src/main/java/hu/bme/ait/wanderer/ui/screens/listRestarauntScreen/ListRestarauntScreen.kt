@@ -107,7 +107,6 @@ fun LocationCard(locationWithLabels: LocationWithLabels) {
 
     var isExpanded by remember { mutableStateOf(false) }
 
-    // Use Box to allow layering the button over the content
     Box(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -115,14 +114,12 @@ fun LocationCard(locationWithLabels: LocationWithLabels) {
             modifier = Modifier.fillMaxWidth(),
             elevation = CardDefaults.cardElevation(4.dp)
         ) {
-            // Main content column
+            // main content
             Column(
                 modifier = Modifier
                     .padding(16.dp)
-                    // Add padding at the bottom to make space for the button if there are many labels
                     .padding(bottom = if (labels.size > 2) 24.dp else 0.dp)
             ) {
-                // --- This part remains the same ---
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -132,7 +129,6 @@ fun LocationCard(locationWithLabels: LocationWithLabels) {
                         text = location.name,
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        // Make room for the rating stars on small screens
                         modifier = Modifier.weight(1f, fill = false)
                     )
                     Row {
@@ -152,20 +148,16 @@ fun LocationCard(locationWithLabels: LocationWithLabels) {
                     Spacer(Modifier.height(8.dp))
                 }
 
-                // --- MODIFIED LABEL DISPLAY ---
                 if (labels.isNotEmpty()) {
-                    // Use FlowRow for a responsive chip layout
                     FlowRow(
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
                         verticalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
-                        // Show the first 2 labels
                         labels.take(2).forEach { label ->
                             SuggestionChip(onClick = {}, label = { Text(label.displayText) })
                         }
                     }
 
-                    // The "dropdown" part for the rest of the labels
                     AnimatedVisibility(visible = isExpanded) {
                         FlowRow(
                             modifier = Modifier
@@ -174,7 +166,6 @@ fun LocationCard(locationWithLabels: LocationWithLabels) {
                             horizontalArrangement = Arrangement.spacedBy(4.dp),
                             verticalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
-                            // Display the rest of the labels
                             labels.drop(2).forEach { label ->
                                 SuggestionChip(onClick = {}, label = { Text(label.displayText) })
                             }
@@ -183,14 +174,12 @@ fun LocationCard(locationWithLabels: LocationWithLabels) {
                 }
             }
         }
-
-        // --- NEW EXPAND/COLLAPSE BUTTON ---
-        // This button is only shown if there are more than 2 labels
+        //drop down
         if (labels.size > 2) {
             IconButton(
                 onClick = { isExpanded = !isExpanded },
                 modifier = Modifier
-                    .align(Alignment.BottomEnd) // Aligns to the bottom-right corner of the Box
+                    .align(Alignment.BottomEnd)
                     .padding(4.dp)
             ) {
                 Icon(

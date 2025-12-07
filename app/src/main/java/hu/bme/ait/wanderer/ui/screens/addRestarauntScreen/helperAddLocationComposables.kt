@@ -110,7 +110,6 @@ fun CategorySelector(
     Column(horizontalAlignment = Alignment.Start, modifier = Modifier.fillMaxWidth()) {
         Text("Category", style = MaterialTheme.typography.titleMedium)
         Spacer(Modifier.height(8.dp))
-        // Consider a LazyRow or FlowRow for a long list of categories
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             categories.take(4).forEach { category ->
                 FilterChip(
@@ -148,7 +147,6 @@ fun LabelSelectionDialog(
                                 checked = selectedLabels.contains(label),
                                 onCheckedChange = { onLabelToggled(label) }
                             )
-                            // Use the user-friendly text from your enum
                             Text(label.displayText, modifier = Modifier.padding(start = 8.dp))
                         }
                     }
@@ -189,7 +187,6 @@ fun NotesInputDialog(
         }
     }
 }
-// Add this new Composable at the bottom of your AddLocationScreen.kt file
 
 @Composable
 fun AddLocationBottomBar(
@@ -198,7 +195,6 @@ fun AddLocationBottomBar(
 ) {
     BottomAppBar(
         actions = {
-            // This is the button to navigate to the list screen
             IconButton(onClick = onListRestaurantsClicked) {
                 Icon(
                     Icons.AutoMirrored.Filled.List,
@@ -206,7 +202,6 @@ fun AddLocationBottomBar(
                 )
             }
         },
-        // The FloatingActionButton is the primary action, which is to Save.
         floatingActionButton = {
             FloatingActionButton(
                 onClick = onSaveClicked,

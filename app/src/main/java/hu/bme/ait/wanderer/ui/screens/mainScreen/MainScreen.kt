@@ -86,7 +86,7 @@ fun MainScreen(
     onLocationInfoClicked:(String) -> Unit,
     mainScreenViewModel: MainScreenViewModel = hiltViewModel()
 ) {
-    //State for search bar
+    //state for search bar
     var query by rememberSaveable { mutableStateOf("") }
     var active by remember { mutableStateOf(false) }
     val searchResults by mainScreenViewModel.searchResults.collectAsState()
@@ -128,7 +128,7 @@ fun MainScreen(
                     mainScreenViewModel.searchPlaces(it)
                                 },
                 onSearch = {
-                    // This is where you would trigger the search
+                    // this is where you would trigger the search
                     mainScreenViewModel.searchPlaces(it)
                     active = false
                 },
@@ -143,7 +143,7 @@ fun MainScreen(
                             headlineContent = { Text(placeResult.name ?: "No name") },
                             supportingContent = { Text(placeResult.formattedAddress ?: "") },
                             leadingContent = {
-                                // Display price level if available
+                                // display price level
                                 placeResult.priceLevel?.let {
                                     Text(
                                         text = "$".repeat(it),
@@ -153,7 +153,7 @@ fun MainScreen(
                                 }
                             },
                             trailingContent = {
-                                // Display rating if available
+                                // display rating
                                 placeResult.rating?.let {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
                                         Icon(
@@ -167,13 +167,10 @@ fun MainScreen(
                                 }
                             },
                             modifier = Modifier.clickable {
-                                // When a user clicks a result:
-                                // 1. Update the search bar text
+
                                 query = placeResult.name ?: ""
-                                // 2. Close the active search view
                                 active = false
                                 Log.d("NAV_DEBUG", "Navigating to LocationInfo with place: ${placeResult.name}")
-                                // 3. (Future step) You could navigate to a detail screen
                                 onLocationInfoClicked(placeResult.placeId ?: "")
                             }
                         )
@@ -182,8 +179,6 @@ fun MainScreen(
 
             }
 
-            // Your main content goes here.
-            // When the search bar is not active, this content is visible.
             if (!active) {
                 Column(
                     modifier = Modifier.fillMaxSize().padding(top = 80.dp), // Add padding to not overlap with search bar
@@ -192,30 +187,8 @@ fun MainScreen(
                     Text("Your saved places or comparison view will be here.")
                 }
             }
-            //
 
         }
     }
 }
 
-//@Composable
-//fun MainBottomAppBar(
-//    onAddRestarauntClicked: () -> Unit,
-//    onListRestarauntsClicked: () -> Unit,
-//) {
-//    BottomAppBar(
-//        actions = {
-//            IconButton(onClick = onListRestarauntsClicked) {
-//                Icon(
-//                    Icons.AutoMirrored.Filled.List, // Corrected icon
-//                    contentDescription = "List Saved Places"
-//                )
-//            }
-//        },
-//        floatingActionButton = {
-//            FloatingActionButton(onClick = onAddRestarauntClicked) {
-//                Icon(Icons.Default.Add, contentDescription = "Add Place")
-//            }
-//        }
-//    )
-//}

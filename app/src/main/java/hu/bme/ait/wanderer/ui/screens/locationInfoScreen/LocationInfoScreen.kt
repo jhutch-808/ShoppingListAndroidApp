@@ -150,21 +150,16 @@ fun InfoResultWidget(placeResult: InfoscreenResult) {
                 .padding(vertical = 16.dp, horizontal = 10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Display the place's name
             placeResult.displayName?.text?.let {
                 Text(
                     text = it,
-                    // Make the name text white to stand out on the dark background
                     color = Color.White,
-                    // Use a slightly smaller, but still prominent style
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold
                 )
             }
-            // Display the open/closed status
             placeResult.currOpeningHours?.openNow?.let { isOpen ->
                 val status = if (isOpen) "Open" else "Closed"
-                // Use a light green for "Open" and a light red for "Closed" for better contrast
                 val statusColor = if (isOpen) Color(0xFFC8E6C9) else Color(0xFFFFCDD2)
                 Text(
                     text = status,
