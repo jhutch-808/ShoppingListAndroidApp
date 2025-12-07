@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Restaurant
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -42,6 +43,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import hu.bme.ait.wanderer.R
 import hu.bme.ait.wanderer.network.InfoscreenResult
 import hu.bme.ait.wanderer.network.PlaceResult
+import hu.bme.ait.wanderer.ui.screens.mainScreen.MainBottomAppBar
+import hu.bme.ait.wanderer.ui.theme.DarkGreen
 import hu.bme.ait.wanderer.ui.theme.ForestGreen
 import hu.bme.ait.wanderer.ui.theme.MintGreen
 
@@ -50,6 +53,7 @@ import hu.bme.ait.wanderer.ui.theme.MintGreen
 fun LocationInfoScreen(
     placeId: String,
     onBackToMainClicked: () -> Unit,
+
     onNavigateToAddLocationClicked: () -> Unit,
     viewModel: LocationInfoViewModel = hiltViewModel()
 ) {
@@ -91,12 +95,15 @@ fun LocationInfoScreen(
                         LocationUIState.Error -> {
                             Text("Error fetching location info")
                         }
+
                         LocationUIState.Init -> {
                             Text("Initializing...")
                         }
+
                         LocationUIState.Loading -> {
                             CircularProgressIndicator()
                         }
+
                         is LocationUIState.Success -> InfoResultWidget(
                             (viewModel.locationUIState as LocationUIState.Success).location
                         )
@@ -105,15 +112,9 @@ fun LocationInfoScreen(
 
             }
 
-            Spacer(Modifier.height(16.dp))
-
-            //Bottom Bar
-
         }
 
-
     }
-
 
 }
 
@@ -121,55 +122,82 @@ fun LocationInfoScreen(
 fun InfoResultWidget(placeResult: InfoscreenResult) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .background(color = MintGreen)
-            .padding(10.dp)
-    ) {
-        placeResult.displayName?.text?.let {
-            Text(
-                text = "Name: $it",
-                style = MaterialTheme.typography.headlineSmall
-            )
-            Spacer(Modifier.height(16.dp))
+
+        ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(DarkGreen) // Use the same color as your top bar
+                .padding(vertical = 16.dp, horizontal = 10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // Display the place's name
+            placeResult.displayName?.text?.let {
+                Text(
+                    text = it,
+                    // Make the name text white to stand out on the dark background
+                    color = Color.White,
+                    // Use a slightly smaller, but still prominent style
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            // Display the open/closed status
+            placeResult.currOpeningHours?.openNow?.let { isOpen ->
+                val status = if (isOpen) "Open" else "Closed"
+                // Use a light green for "Open" and a light red for "Closed" for better contrast
+                val statusColor = if (isOpen) Color(0xFFC8E6C9) else Color(0xFFFFCDD2)
+                Text(
+                    text = status,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = statusColor,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
+            }
         }
-        InfoRow(
-            icon = Icons.Default.LocationOn,
-            label = "Address",
-            text = placeResult.formattedAddress ?: "Not Available"
-        )
-        InfoRow(
-            icon = Icons.Default.Star,
-            label = "Rating",
-            text = placeResult.rating?.let { "${it} / 5.0 (${placeResult.userRatingsTotal}) reviews" }
-                ?: "No Rating"
-        )
-        InfoRow(
-            icon = Icons.Default.AttachMoney,
-            label = "Price Level",
-            text = placeResult.priceLevel?.let { level ->
-                when (level) {
-                    "PRICE_LEVEL_INEXPENSIVE" -> "$ Inexpensive"
-                    "PRICE_LEVEL_MODERATE"-> "$$ Moderate"
-                    "PRICE_LEVEL_EXPENSIVE"-> "$$$ Expensive"
-                    "PRICE_LEVEL_VERY_EXPENSIVE"-> "$$$$ Very Expensive"
-                    else -> "Not Available"
-                }
-            } ?: "Not Available"
-        )
-        InfoRow(
-            icon = Icons.Default.Restaurant,
-            label = "Type",
-            text = placeResult.primaryType?: "Not Available"
-        )
-        InfoRow(
-            icon = Icons.Default.Schedule,
-            label = "Opening Hours",
-            text = placeResult.currOpeningHours.weekdayDescriptions?.joinToString(", ") ?: "Not Available"
-        )
+
+        Column(modifier = Modifier.padding(10.dp)) {
+
+            InfoRow(
+                icon = Icons.Default.LocationOn,
+                label = "Address",
+                text = placeResult.formattedAddress ?: "Not Available"
+            )
+            InfoRow(
+                icon = Icons.Default.Star,
+                label = "Rating",
+                text = placeResult.rating?.let { "${it} / 5.0 (${placeResult.userRatingsTotal}) reviews" }
+                    ?: "No Rating"
+            )
+            InfoRow(
+                icon = Icons.Default.AttachMoney,
+                label = "Price Level",
+                text = placeResult.priceLevel?.let { level ->
+                    when (level) {
+                        "PRICE_LEVEL_INEXPENSIVE" -> "$ Inexpensive"
+                        "PRICE_LEVEL_MODERATE" -> "$$ Moderate"
+                        "PRICE_LEVEL_EXPENSIVE" -> "$$$ Expensive"
+                        "PRICE_LEVEL_VERY_EXPENSIVE" -> "$$$$ Very Expensive"
+                        else -> "Not Available"
+                    }
+                } ?: "Not Available"
+            )
+            InfoRow(
+                icon = Icons.Default.Restaurant,
+                label = "Type",
+                text = placeResult.primaryType ?: "Not Available"
+            )
+            InfoRow(
+                icon = Icons.Default.Schedule,
+                label = "Opening Hours",
+                text = placeResult.currOpeningHours?.weekdayDescriptions?.joinToString("\n")
+                    ?: "Not Available"
+            )
+        }
     }
 
 }
-
 
 
 @Composable
@@ -194,9 +222,15 @@ fun InfoRow(icon: ImageVector, text: String, label: String) {
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+            val textStyle = if (label == "Opening Hours") {
+                MaterialTheme.typography.labelMedium // Use a smaller style for the schedule
+            } else {
+                MaterialTheme.typography.bodyLarge // Keep the original style for others
+            }
+
             Text(
                 text = text,
-                style = MaterialTheme.typography.bodyLarge,
+                style = textStyle,
                 fontWeight = FontWeight.SemiBold
             )
         }

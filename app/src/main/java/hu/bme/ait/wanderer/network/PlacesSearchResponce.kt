@@ -61,19 +61,19 @@ data class Location(
 @Serializable
 data class InfoscreenResult(
     @SerialName("displayName")
-    val displayName: DisplayName?,
+    val displayName: DisplayName? = null,
     @SerialName("priceLevel")
-    val priceLevel: String?,
+    val priceLevel: String? = null,
     @SerialName("rating")
-    val rating: Double?,
+    val rating: Double? = null,
     @SerialName("userRatingCount")
-    val userRatingsTotal: Int?,
+    val userRatingsTotal: Int? = null,
     @SerialName("formattedAddress")
-    val formattedAddress: String?,
+    val formattedAddress: String? = null,
     @SerialName("primaryType")
-    val primaryType: String,
-    @SerialName("currentOpeningHours ")
-    val currOpeningHours: CurrentOpeningHours
+    val primaryType: String? = null,
+    @SerialName("currentOpeningHours")
+    val currOpeningHours: CurrentOpeningHours? = null
    )
 @Serializable
 data class CurrentOpeningHours(
