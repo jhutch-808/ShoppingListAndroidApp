@@ -84,7 +84,7 @@ class AddlocationViewModel @Inject constructor(
                 address = uiState.address,
                 priceRange = uiState.priceRange,
                 visitDate = Date(),
-                locationType = uiState.locationTypeCategory.name?: "other",
+                locationType = uiState.locationTypeCategory,
                 ranking = when (uiState.selectedSentiment) {
                     Sentiment.LIKED -> 5
                     Sentiment.MEH -> 3
@@ -104,6 +104,11 @@ class AddlocationViewModel @Inject constructor(
             }
         }
 
+
+    }
+
+    fun onNameChange(newName:String){
+        uiState = uiState.copy(name = newName)
 
     }
 }

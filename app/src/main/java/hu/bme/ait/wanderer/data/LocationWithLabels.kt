@@ -26,5 +26,12 @@ enum class Label(val displayText: String) {
     HAS_WIFI("Has WiFi"),
     OUTDOOR_SEATING("Outdoor Seating"),
     GOOD_FOR_GROUPS("Good for Groups"),
-    VEGAN_OPTIONS("Vegan Options")
+    VEGAN_OPTIONS("Vegan Options"),
+    KID_FRIENDLY("Kid-Friendly"),
+    ALCOHOL_FREE("Alcohol-Free"),
+    CHEAP_EATS("Cheap Eats"),
+    TAKE_OUT("Take-Out"),
+    DELIVERY("Delivery"),
+    GOOD_FOR_LUNCH("Good for Lunch"),
+    GOOD_FOR_DINNER("Good for Dinner")
 }

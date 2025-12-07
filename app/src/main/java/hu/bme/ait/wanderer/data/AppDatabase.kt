@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @TypeConverters(DateConverter::class, LabelConverter::class)
-@Database(entities = [LocationInfoItem::class, LocationLabelCrossRef::class], version = 2, exportSchema = false)
+@Database(entities = [LocationInfoItem::class, LocationLabelCrossRef::class], version = 3, exportSchema = false)
 abstract class AppDataBase: RoomDatabase(){
     abstract fun locationDAO(): LocationDAO
 

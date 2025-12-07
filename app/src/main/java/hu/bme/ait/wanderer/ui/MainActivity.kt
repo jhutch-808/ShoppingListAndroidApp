@@ -28,6 +28,7 @@ import hu.bme.ait.wanderer.ui.navigation.LocationInfoScreenRoute
 import hu.bme.ait.wanderer.ui.navigation.MainScreenRoute
 import hu.bme.ait.wanderer.ui.navigation.WelcomeScreenRoute
 import hu.bme.ait.wanderer.ui.screens.addRestarauntScreen.AddLocationScreen
+import hu.bme.ait.wanderer.ui.screens.listRestarauntScreen.ListLocationsScreen
 import hu.bme.ait.wanderer.ui.screens.locationInfoScreen.LocationInfoScreen
 import hu.bme.ait.wanderer.ui.screens.mainScreen.MainScreen
 import hu.bme.ait.wanderer.ui.screens.welcomescreens.WelcomeScreen
@@ -116,6 +117,13 @@ fun NavGraph(modifier: Modifier = Modifier) {
 
                 )
 
+            }
+            entry<ListPlacesScreenRoute> {
+                ListLocationsScreen(
+                    onBackClicked = {
+                        backStack.removeLastOrNull()
+                    }
+                )
             }
 
 

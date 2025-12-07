@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
@@ -34,6 +35,17 @@ interface LocationDAO{
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertLabelCrossRefs(crossRefs: List<LocationLabelCrossRef>)
+
+    @Transaction
+    @Query(
+        """
+            SELECT * FROM locationsTable
+            ORDER BY ranking DESC
+        """
+    )
+    fun getLocationsWithLabelsSortedByRank(): Flow<List<LocationWithLabels>>
+
+
 
 
 

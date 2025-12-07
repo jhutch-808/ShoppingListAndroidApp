@@ -100,12 +100,24 @@ fun AddLocationScreen(
         ) {
             //Restaurant Name Header
             item {
-                Text(
-                    // 6. Use the name from the ViewModel state
-                    text = uiState.name,
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold
-                )
+                if(uiState.name.isNotEmpty() && name.isNotEmpty()) {
+
+
+                    Text(
+                        // 6. Use the name from the ViewModel state
+                        text = uiState.name,
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                }else{
+                    OutlinedTextField(
+                        value = uiState.name,
+                        onValueChange = viewModel::onNameChange,
+                        label = { Text("Location Name") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
 
             // select category
