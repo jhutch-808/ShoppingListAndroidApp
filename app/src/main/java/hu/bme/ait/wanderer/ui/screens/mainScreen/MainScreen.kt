@@ -1,5 +1,6 @@
 package hu.bme.ait.wanderer.ui.screens.mainScreen
 
+import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -81,6 +82,7 @@ import java.util.Date
 fun MainScreen(
     onAddRestarauntClicked: () -> Unit,
     onListRestarauntsClicked: () -> Unit,
+    onLocationInfoClicked:(String) -> Unit,
     mainScreenViewModel: MainScreenViewModel = hiltViewModel()
 ) {
     //State for search bar
@@ -169,7 +171,9 @@ fun MainScreen(
                                 query = placeResult.name ?: ""
                                 // 2. Close the active search view
                                 active = false
+                                Log.d("NAV_DEBUG", "Navigating to LocationInfo with place: ${placeResult.name}")
                                 // 3. (Future step) You could navigate to a detail screen
+                                onLocationInfoClicked(placeResult.placeId ?: "")
                             }
                         )
                     }

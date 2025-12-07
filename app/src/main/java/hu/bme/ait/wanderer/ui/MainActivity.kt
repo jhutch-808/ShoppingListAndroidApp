@@ -1,6 +1,7 @@
 package hu.bme.ait.wanderer.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -19,10 +20,14 @@ import androidx.navigation3.scene.rememberSceneSetupNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
 import dagger.hilt.android.AndroidEntryPoint
+import hu.bme.ait.wanderer.data.LocationInfoItem
+import hu.bme.ait.wanderer.network.PlaceResult
 import hu.bme.ait.wanderer.ui.navigation.AddRestarauntScreenRoute
 import hu.bme.ait.wanderer.ui.navigation.ListPlacesScreenRoute
+import hu.bme.ait.wanderer.ui.navigation.LocationInfoScreenRoute
 import hu.bme.ait.wanderer.ui.navigation.MainScreenRoute
 import hu.bme.ait.wanderer.ui.navigation.WelcomeScreenRoute
+import hu.bme.ait.wanderer.ui.screens.locationInfoScreen.LocationInfoScreen
 import hu.bme.ait.wanderer.ui.screens.mainScreen.MainScreen
 import hu.bme.ait.wanderer.ui.screens.welcomescreens.WelcomeScreen
 import hu.bme.ait.wanderer.ui.theme.WandererTheme
@@ -73,9 +78,29 @@ fun NavGraph(modifier: Modifier = Modifier) {
                     },
                     onListRestarauntsClicked = {
                         backStack.add(ListPlacesScreenRoute)
+                    },
+                    onLocationInfoClicked = { placeID ->
+                        Log.d("NAV_DEBUG", "Navigating to LocationInfo with place: ${placeID}")
+                        backStack.add(LocationInfoScreenRoute(placeId = placeID))
                     }
                 )
             }
+
+            entry<LocationInfoScreenRoute> { navKey ->
+                LocationInfoScreen(
+                    placeId = navKey.placeId,
+                    onBackToMainClicked = {
+                        backStack.removeLastOrNull()
+                    },
+                    onNavigateToAddLocationClicked = {
+                        backStack.add(AddRestarauntScreenRoute)
+                    }
+                )
+            }
+
+            entry<AddRestarauntScreenRoute> {
+            }
+
 
         }
     )

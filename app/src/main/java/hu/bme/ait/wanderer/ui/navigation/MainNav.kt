@@ -15,3 +15,6 @@ data object AddRestarauntScreenRoute: NavKey
 
 @Serializable
 data object ListPlacesScreenRoute: NavKey
+
+@Serializable
+data class LocationInfoScreenRoute(val placeId: String): NavKey

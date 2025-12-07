@@ -19,6 +19,9 @@ data class PlaceResult(
     @SerialName("formatted_address")
     val formattedAddress: String? = null,
 
+    @SerialName("id")
+    val placeId: String? = null,
+
     // The geometry of the place, which includes the location (latitude and longitude).
     val geometry: Geometry? = null,
 

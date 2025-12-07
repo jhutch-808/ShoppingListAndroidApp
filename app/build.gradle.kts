@@ -46,6 +46,7 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    //implementation("androidx.navigation3:navigation3-viewmodel:1.0.0-alpha10")
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
@@ -94,6 +95,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
+    // to have more icons
+    implementation("androidx.compose.material:material-icons-extended")
 
     //implementation(libs.places)
 }
